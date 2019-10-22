@@ -18,8 +18,10 @@ namespace NamespaceName
    public static string[,] board = new string[20,20];
    public static int xpos = 10;
    public static int ypos = 10;
+   public static int score = 0;
 
    public static void initialize(){
+
 
 
      for (int i =0; i<20;i++) {
@@ -32,6 +34,8 @@ namespace NamespaceName
 
      }
 
+     spawnFood();
+
      for (int i =0; i<20;i++) {
 
        for (int j =0; j<20; j++) {
@@ -40,8 +44,9 @@ namespace NamespaceName
        Console.WriteLine();
 
      }
+     Console.WriteLine();
+     Console.WriteLine("Total Score: " + score);
    }
-
 
     public static void display(){
 
@@ -53,7 +58,75 @@ namespace NamespaceName
           }
           Console.WriteLine();
       }
+
+      Console.WriteLine();
+      Console.WriteLine("Total Score: " + score);
+
     }
+
+    public static int RandomFood(){
+
+        Random random = new Random();
+        return random.Next(0,20);
+    }
+
+    public static void spawnFood(){
+
+      bool Spawn = true;
+
+
+      for (int i =0; i<20; i++) {
+        for (int j =0; j<20; j++) {
+
+          if(board[i,j] == " $ ")
+          Spawn = false;
+
+        }
+      }
+
+      if (Spawn){
+
+        int x = RandomFood();
+        int y = RandomFood();
+
+        while(x != xpos && y != ypos){
+           x = RandomFood();
+           y = RandomFood();
+        }
+        board[x,y] = " $ ";
+
+
+
+
+      }
+
+    }
+
+
+    public static void checkFood(){
+
+
+      bool Spawn = true;
+
+
+      for (int i =0; i<20; i++) {
+        for (int j =0; j<20; j++) {
+
+          if(board[i,j] == " $ ")
+          Spawn = false;
+
+        }
+      }
+
+      if (Spawn)
+        score++;
+
+
+
+    }
+
+
+
 
 
     public static void changePos(char x){
@@ -63,24 +136,29 @@ namespace NamespaceName
         board[xpos,ypos] = " * ";
         xpos--;
         board[xpos,ypos] = " 0 ";
+        checkFood();
+        spawnFood();
       }
       else if (x == 'd') {
         board[xpos,ypos] = " * ";
         ypos++;
         board[xpos,ypos] = " 0 ";
+        checkFood();
+        spawnFood();
       }
       else if (x == 's') {
-
         board[xpos,ypos] = " * ";
         xpos++;
         board[xpos,ypos] = " 0 ";
-
+        checkFood();
+        spawnFood();
       }
       else if (x=='a') {
-
         board[xpos,ypos] = " * ";
         ypos--;
         board[xpos,ypos] = " 0 ";
+        checkFood();
+        spawnFood();
       }
 
       display();
